@@ -1,1 +1,158 @@
-<h1> hello world</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>NFFB</title>
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/citation.css">
+    <link rel="stylesheet" href="css/title.css">
+    <meta name="google-site-verification" content="QZBN3L69Q-c1oJGtwBx3eOj6ugnkjS7Q2tZUGm-VTkA"/>
+</head>
+
+<body>
+    <div class="header" id="home" style="padding-bottom: 90px;"></div>
+
+    <section class="title">
+        Neural Fourier Filter Bank
+    </section>
+
+    <section class="author">
+        <a href="https://zhijiew94.github.io/">Zhijie Wu</a>
+        <a href="https://scholar.google.ca/citations?user=oAYi1YQAAAAJ&hl=en"> Yuhe Jin </a>
+        <a href="https://www.cs.ubc.ca/~kmyi/"> Kwang Moo Yi</a>
+        <affiliation>The University of British Columbia</affiliation>
+        <a href="https://arxiv.org/pdf/2212.01735.pdf" class="links">[paper]</a>
+        <a href="https://github.com/ubc-vision/NFFB" class="links">[code]</a>
+
+    </section>
+
+<!--    <div class="line"></div>-->
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.001.png">
+        <p>
+<!--        <b>NFFB </b>-->
+            We propose neural Fourier filter bank to perform spatial and frequency-wise decomposition jointly, inspired by wavelets. Our method provides significantly improved reconstruction quality given the same computation and storage budget, as represented by the PSNR curve and the error image overlay. Relying only on space partitioning without frequency resolution (InstantNGP) or frequency encodings without space resolution (SIREN) provides suboptimal performance and convergence. Simply considering both (ModSine) enhances scalability when applied to larger scenes, but not in terms of quality and convergence.
+
+        </p>
+    </div>
+
+    <div class="header" id="abstract">Abstract</div>
+    <div class="line"></div>
+
+    <div class="container">
+        <p>
+            We present a novel method to provide efficient and highly detailed reconstructions. Inspired by wavelets, we learn a neural field that decompose the signal both spatially and frequency-wise. We follow the recent grid-based paradigm for spatial decomposition, but unlike existing work, encourage specific frequencies to be stored in each grid via Fourier features encodings. We then apply a multi-layer perceptron with sine activations, taking these Fourier encoded features in at appropriate layers so that higher-frequency components are accumulated on top of lower-frequency components sequentially, which we sum up to form the final output. We demonstrate that our method outperforms the state of the art regarding model compactness and convergence speed on multiple tasks: 2D image fitting, 3D shape reconstruction, and neural radiance fields.
+        </p>
+    </div>
+
+    <h1 class="header" id="results">Overview</h1>
+
+
+    <div class="line"></div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.008.png">
+        <p>
+<!--        <b>NFFB </b>-->
+            In our framework, given a position x, low- and high-frequency filters are used to decompose the signal, which is then reconstructed by accumulating them and using the intermediate outputs as shown. Here, we utilize a multi-scale grid to act as if they store these high-frequency filtering outcomes at various spatially decomposed locations.
+        </p>
+    </div>
+
+    <h1 class="header" id="speech_results">Architecture</h1>
+    <div class="line"></div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.009.png">
+        <p>
+            Based on the input query, e.g. position x, our neural Fourier filter bank uses both a grid and a Multi-Layer Perceptron (MLP) to compose the final estimate. Specifically, grid features are extracted via interpolation at multiple scale levels, which are then encoded to appropriate frequencies for each layer via the Fourier Feature layers. The MLP uses these encoded features as the higher-frequency component, while the earlier layer outputs as the lower-frequency ones, similar to wavelet filter banks.  Intermediate outputs are then aggregated as the final estimate.
+        </p>
+    </div>
+
+
+    <h1 class="header" id="env_results">Results</h1>
+    <div class="line"></div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.010.png">
+       <p>
+          <b>2D Fitting</b> --
+    Qualitative results for the Tokyo image.
+    Our method provides the best reconstruction quality at various scale levels, from nearby regions to far away ones, demonstrating the importance of considering both space and frequency jointly.
+     </p>
+    </div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.013.png">
+        <p>
+             <b>3D Fitting</b> -- Qualitative comparisons for the `Bearded Man' shape.
+    Our method is the most compact among the compared methods, and is capable of reconstructing both coarse and fine details without obvious artifacts.
+        </p>
+
+    </div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.003.png">
+        <p>
+            <b>Novel View Synthesis</b> --
+    Although more compact, our method can synthesize comparable or better results.
+        </p>
+
+    </div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.012.png">
+        <p>
+           <b> Ablation study</b> --
+
+    We compare against variants of our method with the Fourier grid feature and/or the proposed MLP composition architecture disabled.
+    Having both components together is critical for performance.
+        </p>
+    </div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.023.png">
+        <p>
+            <b>2D fitting result for `Tokyo' image.</b>
+    Our entire reconstructed image is presented on the top while four close-up views are presented on the bottom.
+    Our method provides near-perfect reconstruction.
+        </p>
+
+    </div>
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.024.png">
+        <p>
+            <b>3D fitting result for the `Asian Dragon'</b>
+    The left sub-image is the ground truth shape while six zoomed insets are shown on the right for better detail visualizations.
+        </p>
+    </div>
+
+    <div class="container">
+        <img style='height: 90%; width: 90%; object-fit: contain' src="Fig/Fig_lr.025.png">
+        <p>
+            <b>Qualitative results for neural radiance fields.</b>
+    Our method is able to clearly reconstruct the textures (eg, the chair on second row) and the geometric details (eg the lego on the last row).
+        </p>
+
+    </div>
+
+    <div class="header" id="acknowledgements">Acknowledgements</div>
+    <div class="line"></div>
+
+    <div class="container">
+        <p>
+            This work was supported by the Natural Sciences and Engineering Research Council of Canada (NSERC) Discovery Grant, Digital Research Alliance of Canada, and by Advanced Research Computing at the University of British Columbia.
+        </p>
+    </div>
+
+    <div class="header" id="citation">Citation</div>
+    <div class="line"></div>
+
+    <section class="citation">
+        @article{wu2023neural,</br>
+          title={Neural Fourier Filter Bank},</br>
+          author={Wu, Zhijie and Jin, Yuhe and Yi, Kwang Moo},</br>
+          booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},</br>
+          pages={14153--14163},</br>
+          year={2023}</br>
+        }
+
+    </section>
+
+</body>
+
+</html>
